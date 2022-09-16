@@ -47,6 +47,15 @@ class _CategorieScreenState extends State<CategorieScreen> {
     return Scaffold(
       appBar: AppBar(
         title: brandName(), backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         elevation: 0.0,
         // actions: <Widget>[
         //   Container(
@@ -58,6 +67,7 @@ class _CategorieScreenState extends State<CategorieScreen> {
         // ],
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: wallPaper(photos, context),
       ),
     );

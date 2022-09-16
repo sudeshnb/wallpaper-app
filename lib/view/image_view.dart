@@ -14,25 +14,23 @@ import 'package:wallpaper/wallpaper.dart';
 class ImageView extends StatefulWidget {
   final String imgPath;
 
-  const ImageView({
-    Key? key,
-    required this.imgPath,
-  }) : super(key: key);
+  const ImageView({Key? key, required this.imgPath}) : super(key: key);
 
   @override
   _ImageViewState createState() => _ImageViewState();
 }
 
 class _ImageViewState extends State<ImageView> {
-  var filePath;
+  // ignore: prefer_typing_uninitialized_variables
+  // var filePath;
 
-  _launchURL(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // _launchURL(String url) async {
+  //   if (await canLaunchUrl(Uri.parse(url))) {
+  //     await launchUrl(Uri.parse(url));
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +42,13 @@ class _ImageViewState extends State<ImageView> {
             child: SizedBox(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: kIsWeb
-                  ? Image.network(widget.imgPath, fit: BoxFit.cover)
-                  : CachedNetworkImage(
-                      imageUrl: widget.imgPath,
-                      placeholder: (context, url) => Container(
-                        color: const Color(0xfff5f8fd),
-                      ),
-                      fit: BoxFit.cover,
-                    ),
+              child: CachedNetworkImage(
+                imageUrl: widget.imgPath,
+                placeholder: (context, url) => Container(
+                  color: const Color(0xfff5f8fd),
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           Container(
@@ -63,16 +59,7 @@ class _ImageViewState extends State<ImageView> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 InkWell(
-                    onTap: () {
-                      if (kIsWeb) {
-                        _launchURL(widget.imgPath);
-                        //js.context.callMethod('downloadUrl',[widget.imgPath]);
-                        //response = await dio.download(widget.imgPath, "./xx.html");
-                      } else {
-                        _save();
-                      }
-                      //Navigator.pop(context);
-                    },
+                    onTap: _save,
                     child: Stack(
                       children: <Widget>[
                         Container(
@@ -108,13 +95,9 @@ class _ImageViewState extends State<ImageView> {
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),
                                 ),
-                                SizedBox(
-                                  height: 1,
-                                ),
+                                SizedBox(height: 1),
                                 Text(
-                                  kIsWeb
-                                      ? "Image will open in new tab to download"
-                                      : "Image will be saved in gallery",
+                                  "Image will be saved in gallery",
                                   style: TextStyle(
                                       fontSize: 8, color: Colors.white70),
                                 ),

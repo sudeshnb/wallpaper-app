@@ -20,7 +20,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   List<CategorieModel> categories = [];
-
   int noOfImageToLoad = 30;
   List<PhotosModel> photos = [];
 
@@ -32,7 +31,6 @@ class _HomeState extends State<Home> {
 
       Map<String, dynamic> jsonData = jsonDecode(value.body);
       jsonData["photos"].forEach((element) {
-        //print(element);
         PhotosModel photosModel;
         photosModel = PhotosModel.fromMap(element);
         photos.add(photosModel);
@@ -77,11 +75,13 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
         title: brandName(),
         elevation: 0.0,
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             Container(
@@ -97,7 +97,7 @@ class _HomeState extends State<Home> {
                       child: TextField(
                     controller: searchController,
                     decoration: const InputDecoration(
-                        hintText: "search wallpapers",
+                        hintText: "Search wallpapers",
                         border: InputBorder.none),
                   )),
                   InkWell(
@@ -116,37 +116,38 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  "Made By ",
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 12,
-                      fontFamily: 'Overpass'),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    _launchURL(
-                        "https://sites.google.com/view/sudeshbandara/home?authuser=0");
-                  },
-                  child: const SizedBox(
-                      child: Text(
-                    "Sudesh Bandara",
-                    style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 12,
-                        fontFamily: 'Overpass'),
-                  )),
-                ),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: <Widget>[
+            //     const Text(
+            //       "Made By ",
+            //       style: TextStyle(
+            //           color: Colors.black54,
+            //           fontSize: 12,
+            //           fontFamily: 'Overpass'),
+            //     ),
+            //     GestureDetector(
+            //       onTap: () {
+            //         _launchURL(
+            //             "https://sites.google.com/view/sudeshbandara/home?authuser=0");
+            //       },
+            //       child: const SizedBox(
+            //           child: Text(
+            //         "Sudesh Bandara",
+            //         style: TextStyle(
+            //             color: Colors.blue,
+            //             fontSize: 12,
+            //             fontFamily: 'Overpass'),
+            //       )),
+            //     ),
+            //   ],
+            // ),
             const SizedBox(height: 16),
             SizedBox(
               height: 80,
               child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 24),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: categories.length,
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
@@ -213,77 +214,38 @@ class CategoriesTile extends StatelessWidget {
       },
       child: Container(
         margin: const EdgeInsets.only(right: 8),
-        child: kIsWeb
-            ? Column(
-                children: <Widget>[
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: kIsWeb
-                          ? Image.network(
-                              imgUrls,
-                              height: 50,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            )
-                          : CachedNetworkImage(
-                              imageUrl: imgUrls,
-                              height: 50,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            )),
-                  const SizedBox(height: 4),
-                  Container(
-                      width: 100,
-                      alignment: Alignment.center,
-                      child: Text(
-                        categorie,
-                        style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Overpass'),
-                      )),
-                ],
-              )
-            : Stack(
-                children: <Widget>[
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: kIsWeb
-                          ? Image.network(
-                              imgUrls,
-                              height: 50,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            )
-                          : CachedNetworkImage(
-                              imageUrl: imgUrls,
-                              height: 50,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            )),
-                  Container(
-                    height: 50,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color: Colors.black26,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  Container(
-                      height: 50,
-                      width: 100,
-                      alignment: Alignment.center,
-                      child: Text(
-                        categorie,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: 'Overpass'),
-                      ))
-                ],
+        child: Stack(
+          children: <Widget>[
+            ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: CachedNetworkImage(
+                  imageUrl: imgUrls,
+                  height: 50,
+                  width: 100,
+                  fit: BoxFit.cover,
+                )),
+            Container(
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                color: Colors.black26,
+                borderRadius: BorderRadius.circular(50),
               ),
+            ),
+            Container(
+                height: 50,
+                width: 100,
+                alignment: Alignment.center,
+                child: Text(
+                  categorie,
+                  style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: 'Overpass'),
+                ))
+          ],
+        ),
       ),
     );
   }

@@ -50,6 +50,15 @@ class _SearchViewState extends State<SearchView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: brandName(),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         elevation: 0.0,
         // actions: <Widget>[
         //   Container(
@@ -62,6 +71,7 @@ class _SearchViewState extends State<SearchView> {
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             const SizedBox(height: 16),
